@@ -97,24 +97,90 @@ def test_get_longest_equal_int_real():
 test_get_longest_equal_int_real()
 
 
+def numar_prim(x):
+    '''
+    Determina daca un numar este prim sau nu
+    :param x: un numar din lista
+    :return: Da sau Nu
+    '''
+    if x < 2 and x != int(x):
+        return False
+    x = int(x)
+    for i in range(2, x//2 + 1):
+        if (x) % i == 0:
+            return False
+    return True
+
+
+def test_numar_prim():
+    assert numar_prim(13) == True
+    assert numar_prim(12) == False
+    assert numar_prim(1) == False
+
+
+def SirPrim(l):
+    '''
+    Verifica daca un sir contine doar numere prime
+    :param l: o lista
+    :return: Da sau Nu
+    '''
+    for i in l:
+        if numar_prim(i) == False:
+            return False
+    return True
+
+
+def test_SirPrim():
+    assert SirPrim([13, 7, 5]) == True
+    assert SirPrim([23, 15, 7]) == False
+
+
+def get_longest_all_primes(l):
+    '''
+    Gaseste cea mai lunga secventa de numere prime
+    :param l: o lista
+    :return: cea mai lunga secventa
+    '''
+    auxlist = []
+    for i in range(len(l)):
+        for j in range(len(l)):
+            if SirPrim(l[i:j+1]) and len(l[i:j+1]) >= len(auxlist):
+                auxlist = l[i:j+1]
+    return auxlist
+
+
+def test_get_longest_all_primes():
+    assert get_longest_all_primes([13, 23, 7, 5, 12, 3, 5, 7]) == [13, 23, 7, 5]
+    assert get_longest_all_primes([13, 12, 23, 7]) == [23, 7]
+
+
+test_get_longest_all_primes()
+
+
 def printMeniu():
     print("1.Citire date")
     print("2.Determina cea mai lunga secventa de numere consecutive")
     print("3.Determina cea mai lunga secventa de numere care au partea întreagă egală cu partea fracționară.")
-    print("4.Iesire")
+    print("4.Determina cea mai lunga secventa de numere prime")
+    print("5.Iesire")
 
 
-if __name__ == '__main__':
-    lst = []
+def main():
+    l = []
     while True:
         printMeniu()
         x = input("Dati optiunea ")
         if x == "1":
-            lst = citire_lista()
+            l = citire_lista()
         elif x == "2":
-            print(get_longest_sorted_asc(lst))
+            print(get_longest_sorted_asc(l))
         elif x == "3":
-            print(get_longest_equal_int_real(lst))
+            print(get_longest_equal_int_real(l))
         elif x == "4":
+            print(get_longest_all_primes(l))
+        elif x == "5":
             break
         else: print("Eroare.Dati alta valoare.")
+
+
+main()
